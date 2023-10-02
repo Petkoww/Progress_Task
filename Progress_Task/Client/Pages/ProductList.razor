@@ -1,0 +1,43 @@
+﻿@page "/products"
+
+@using Progress_Task.Shared
+@using Progress_Task.Client.Services
+
+<h3>Product List</h3>
+
+@if (products != null && products.Any())
+{
+    <table class="table">
+        <thead>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <div class="product-card">
+                    <div class="product-info">
+                        <h4>@product.ProductName</h4>
+                        <p>Price: @product.UnitPrice.ToString("C")</p>
+                    </div>
+                    <div class="product-info">
+                        <p>Units In Stock: @product.UnitInStock</p>
+                        <p>Delivery Date: @product.DeliveryOn.ToShortDateString()</p>
+                    </div>
+                </div>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products available.</p>
+}
+
+@code {
+    private List<Product> products;
+
+    protected override void OnInitialized()
+    {
+        var productService = new ProductService();
+        products = productService.GetProducts();
+    }
+}
